@@ -22,6 +22,7 @@ import android.os.Environment;
 import java.io.File;
 
 import cn.garymb.wechatmoments.common.Constants;
+import cn.garymb.wechatmoments.common.LogLevel;
 
 public class StaticApplication extends Application {
 
@@ -32,6 +33,11 @@ public class StaticApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (BuildConfig.DEBUG) {
+            LogLevel.setLogLevel(LogLevel.DEBUG);
+        } else {
+            LogLevel.setLogLevel(LogLevel.FINEST);
+        }
         INSTANCE = this;
     }
 

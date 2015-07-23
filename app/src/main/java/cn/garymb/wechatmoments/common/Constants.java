@@ -31,4 +31,9 @@ public final class Constants {
     public static final String JSON_KEY_TWEET_SENDER = "sender";
     public static final String JSON_KEY_TWEET_CONTENT = "content";
     public static final String JSON_KEY_TWEET_IMAGES = "images";
+
+    public static final String BASE_URL = "http://thoughtworks-ios.herokuapp.com/";
+
+    public static final String USER_URL = BASE_URL + "user/jsmith";
+    public static final String TWEETS_URL = BASE_URL + "user/jsmith/tweets";
 }

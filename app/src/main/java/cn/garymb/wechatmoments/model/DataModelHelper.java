@@ -18,16 +18,55 @@ package cn.garymb.wechatmoments.model;
 
 import android.os.Message;
 
-import cn.garymb.wechatmoments.controller.IViewController;
+import java.util.WeakHashMap;
 
-public class DataModelHelper implements IDataOperation {
+import cn.garymb.wechatmoments.controller.IViewController;
+import cn.garymb.wechatmoments.core.IExecutors;
+import cn.garymb.wechatmoments.core.ITask;
+import cn.garymb.wechatmoments.core.NoCacheTask;
+
+public class DataModelHelper implements IDataOperation, ITask.TaskCallback<Message> {
+
+    private IExecutors mExecutors;
+    private WeakHashMap<Message, IViewController> mNotifyTargets;
+
+    public DataModelHelper(IExecutors executors) {
+        mExecutors = executors;
+        mNotifyTargets = new WeakHashMap<Message, IViewController>();
+    }
+
+
     @Override
     public void requestDataOperation(IViewController target, Message msg) {
-
+        ITask<Message> task = null;
+        switch (msg.what) {
+            case IDataOperation.REQEST_TYPE_GET_USER_INFO:
+            case IDataOperation.REQEST_TYPE_GET_TWEETS_INFO:
+                task = new NoCacheTask(msg, this);
+                break;
+            default:
+                break;
+        }
+        if (task != null) {
+            task.executeOnExecutors(mExecutors);
+        }
     }
 
     @Override
     public void cancelDataOperation(IViewController target, Message msg) {
+        //TODO
+    }
 
+    @Override
+    public void onTaskTimeout(Message result) {
+        //TODO
+    }
+
+    @Override
+    public void onTaskFinish(Message result) {
+        IViewController controller = mNotifyTargets.remove(result);
+        if (controller != null) {
+            controller.handleMessage(result);
+        }
     }
 }
