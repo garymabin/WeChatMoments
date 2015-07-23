@@ -16,6 +16,7 @@
 
 package cn.garymb.wechatmoments.model;
 
+import android.graphics.Bitmap;
 import android.os.Message;
 
 import com.android.volley.RequestQueue;
@@ -25,9 +26,11 @@ import com.squareup.okhttp.OkHttpClient;
 import cn.garymb.wechatmoments.StaticApplication;
 import cn.garymb.wechatmoments.common.OkHttpStack;
 import cn.garymb.wechatmoments.common.ParcelableObjectPool;
+import cn.garymb.wechatmoments.common.ParcelablePoolObject;
 import cn.garymb.wechatmoments.common.ParcelablePoolObjectFactory;
 import cn.garymb.wechatmoments.controller.IViewController;
 import cn.garymb.wechatmoments.core.DataExecutors;
+import cn.garymb.wechatmoments.model.data.ImageItem;
 
 public class Model implements  IDataOperation{
 
@@ -73,5 +76,13 @@ public class Model implements  IDataOperation{
         } else {
             mDataModelHelper.cancelDataOperation(target, msg);
         }
+    }
+
+    public Bitmap getBitmap(ImageItem item) {
+        return mImageModelHelper.getBitmap(item);
+    }
+
+    public ParcelablePoolObject requestPoolObject() {
+        return mBundlePool.newObject();
     }
 }

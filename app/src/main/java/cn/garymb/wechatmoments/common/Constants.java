@@ -22,4 +22,13 @@ public final class Constants {
     public static final int CACHE_IMAGES_TYPE = 0;
 
     public static final String CACHE_IMAGES_DIR = "images";
+
+    public static final String JSON_KEY_USER_PROFILE_NAME = "profile-image";
+    public static final String JSON_KEY_USER_AVATAR = "avatar";
+    public static final String JSON_KEY_USER_NICK = "John Smith";
+    public static final String JSON_KEY_USER_USERNAME = "jsmith";
+
+    public static final String JSON_KEY_TWEET_SENDER = "sender";
+    public static final String JSON_KEY_TWEET_CONTENT = "content";
+    public static final String JSON_KEY_TWEET_IMAGES = "images";
 }
