@@ -33,12 +33,14 @@ public class TweetInfo extends BaseInfo {
     public List<String> images;
     public UserInfo sender;
     public String content;
+    public List<CommentInfo> comments;
 
     @Override
     protected void readFromParcel(Parcel source) {
         images = source.createStringArrayList();
         sender = source.readParcelable(UserInfo.class.getClassLoader());
         content = source.readString();
+        comments = source.createTypedArrayList(CommentInfo.CREATOR);
     }
 
     @Override
@@ -58,6 +60,16 @@ public class TweetInfo extends BaseInfo {
                 images.add(imageJsonArray.getString(i));
             }
         }
+        if (obj.has(Constants.JSON_KEY_TWEET_COMMENTS)) {
+            JSONArray commentJsonArray = obj.getJSONArray(Constants.JSON_KEY_TWEET_COMMENTS);
+            int count = commentJsonArray == null ? 0 : commentJsonArray.length();
+            comments = new ArrayList<>(count);
+            for (int i = 0; i < count; i ++) {
+                CommentInfo comment = new CommentInfo();
+                comment.fromJSONData(commentJsonArray.getJSONObject(i));
+                comments.add(comment);
+            }
+        }
     }
 
     @Override
@@ -75,4 +87,45 @@ public class TweetInfo extends BaseInfo {
         dest.writeParcelable(sender, flags);
         dest.writeString(content);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[TweetInfo]: ");
+        sb.append("images: ").append(images == null ? "[unspecified]" : dumpImages())
+                .append(" sender: ").append(sender == null ? "[unspecified]" : sender.toString())
+                .append(" content: ").append(content == null ? "[unspecified]" : content)
+                .append(" comments: ").append(comments == null ? "[unspecified]" : dumpComments());
+        return sb.toString();
+    }
+
+    private String dumpComments() {
+        StringBuilder sb = new StringBuilder();
+        for (CommentInfo ci : comments) {
+            sb.append(ci.toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    private String dumpImages() {
+        StringBuilder sb = new StringBuilder();
+        for (String imageUrl : images) {
+            sb.append(imageUrl).append("\n");
+        }
+        return sb.toString();
+    }
+
+    public static final Creator<TweetInfo> CREATOR = new Creator<TweetInfo>() {
+
+        @Override
+        public TweetInfo createFromParcel(Parcel source) {
+            TweetInfo info = new TweetInfo();
+            info.readFromParcel(source);
+            return info;
+        }
+
+        @Override
+        public TweetInfo[] newArray(int size) {
+            return new TweetInfo[size];
+        }
+    };
 }

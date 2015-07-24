@@ -43,11 +43,11 @@ public class NoCacheTask extends BaseDataTask {
         Request<?> request = null;
         Bundle param = ((ParcelablePoolObject) mData.obj).getData();
         switch (mData.what) {
-            case IDataOperation.REQEST_TYPE_GET_USER_INFO:
+            case IDataOperation.REQUEST_TYPE_GET_USER_INFO:
                 request = new UserInfoRequest(Constants.USER_URL, this, this, mData);
                 break;
-            case IDataOperation.REQEST_TYPE_GET_TWEETS_INFO:
-                request = new TweetsRequest(Constants.USER_URL, this, this, mData);
+            case IDataOperation.REQUEST_TYPE_GET_TWEETS_INFO:
+                request = new TweetsRequest(Constants.TWEETS_URL, this, this, mData);
                 break;
         }
         return request;

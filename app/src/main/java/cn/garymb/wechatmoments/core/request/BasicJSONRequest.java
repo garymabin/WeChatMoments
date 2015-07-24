@@ -28,9 +28,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonRequest;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -92,7 +89,7 @@ public abstract class BasicJSONRequest<T> extends JsonRequest<T> {
         return sb.toString();
     }
 
-    protected abstract T parseResult(JSONObject ob);
+    protected abstract T parseResult(String ob);
 
     protected abstract Map<String, String> getParamsFromBundle(Bundle param);
 
@@ -102,19 +99,15 @@ public abstract class BasicJSONRequest<T> extends JsonRequest<T> {
         try {
             String jsonString = new String(response.data,
                     HttpHeaderParser.parseCharset(response.headers));
-            if (LogLevel.isLoggerable(LogLevel.DEBUG)) {
-                Log.d(TAG, "receive json result: " + jsonString);
-            }
-            JSONObject obj = new JSONObject(jsonString);
-            if (obj != null) {
-                return Response.success(parseResult(obj), getCacheEntry());
+            if (jsonString != null) {
+                if (LogLevel.isLoggerable(LogLevel.DEBUG)) {
+                    Log.d(TAG, "receive json result: " + jsonString);
+                }
+                return Response.success(parseResult(jsonString), getCacheEntry());
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             error = "unsupported encoding";
-        } catch (JSONException e) {
-            e.printStackTrace();
-            error = "json parsed error";
         }
         return Response.error(new VolleyError(error));
     }

@@ -39,6 +39,7 @@ public class StaticApplication extends Application {
             LogLevel.setLogLevel(LogLevel.FINEST);
         }
         INSTANCE = this;
+        initCacheDir();
     }
 
     public static StaticApplication peekInstance() {

@@ -38,10 +38,11 @@ public class DataModelHelper implements IDataOperation, ITask.TaskCallback<Messa
 
     @Override
     public void requestDataOperation(IViewController target, Message msg) {
+        mNotifyTargets.put(msg, target);
         ITask<Message> task = null;
         switch (msg.what) {
-            case IDataOperation.REQEST_TYPE_GET_USER_INFO:
-            case IDataOperation.REQEST_TYPE_GET_TWEETS_INFO:
+            case IDataOperation.REQUEST_TYPE_GET_USER_INFO:
+            case IDataOperation.REQUEST_TYPE_GET_TWEETS_INFO:
                 task = new NoCacheTask(msg, this);
                 break;
             default:

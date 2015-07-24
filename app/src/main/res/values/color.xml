@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2015 Garymabin
   ~
@@ -15,14 +16,6 @@
   -->
 
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <item name="windowActionBar">false</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/main_color</item>
-        <item name="colorPrimaryDark">@color/main_actionbar_color</item>
-    </style>
-
+    <color name="main_color">#3F51B5</color>
+    <color name="main_actionbar_color">#3F51B5</color>
 </resources>

@@ -24,13 +24,10 @@ import com.android.volley.Response;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import cn.garymb.wechatmoments.common.Constants;
 import cn.garymb.wechatmoments.common.ParcelablePoolObject;
 import cn.garymb.wechatmoments.model.IDataOperation;
 import cn.garymb.wechatmoments.model.data.TweetInfo;
@@ -42,10 +39,10 @@ public class TweetsRequest extends BasicJSONRequest<Message> {
     }
 
     @Override
-    protected Message parseResult(JSONObject ob) {
+    protected Message parseResult(String ob) {
         int result = IDataOperation.REQUEST_RESULT_SUCCESS;
         try {
-            JSONArray arrays = ob.getJSONArray("");
+            JSONArray arrays = new JSONArray(ob);
             int size = arrays == null ? 0 : arrays.length();
             ArrayList<TweetInfo> tweets = new ArrayList<TweetInfo>(size);
             for (int i = 0; i < size; i ++) {

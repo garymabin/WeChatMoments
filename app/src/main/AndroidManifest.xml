@@ -18,6 +18,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.garymb.wechatmoments" >
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name="cn.garymb.wechatmoments.StaticApplication"
         android:allowBackup="true"

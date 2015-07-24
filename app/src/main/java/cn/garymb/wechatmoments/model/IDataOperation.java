@@ -38,8 +38,8 @@ public interface IDataOperation {
     static final String BUNDLE_KEY_RESULT_TWEETS = "cgw.result.tweets";
 
     //request type
-    static final int REQEST_TYPE_GET_USER_INFO = 0x1001;
-    static final int REQEST_TYPE_GET_TWEETS_INFO = 0x1002;
+    static final int REQUEST_TYPE_GET_USER_INFO = 0x1001;
+    static final int REQUEST_TYPE_GET_TWEETS_INFO = 0x1002;
     static final int REQUEST_TYPE_GET_IMAGE_BITMAP = 0x10FE;
     static final int REQUEST_TYPE_DECODE_IMAGE_BITMAP = 0x10FF;
 

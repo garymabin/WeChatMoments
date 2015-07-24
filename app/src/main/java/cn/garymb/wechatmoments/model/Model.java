@@ -55,7 +55,7 @@ public class Model implements  IDataOperation{
         mBundlePool = new ParcelableObjectPool(new ParcelablePoolObjectFactory(), MAX_BUNDLE_FACTORY_SIZE);
         mExecutors = new DataExecutors(mDataQueue);
         mImageModelHelper = new ImageModelHelper(mExecutors);
-        mDataModelHelper = new DataModelHelper();
+        mDataModelHelper = new DataModelHelper(mExecutors);
     }
 
     @Override
@@ -82,7 +82,11 @@ public class Model implements  IDataOperation{
         return mImageModelHelper.getBitmap(item);
     }
 
-    public ParcelablePoolObject requestPoolObject() {
+    public ParcelablePoolObject peekPoolObject() {
         return mBundlePool.newObject();
+    }
+
+    public void freePoolObject(ParcelablePoolObject obj) {
+        mBundlePool.freeObject(obj);
     }
 }

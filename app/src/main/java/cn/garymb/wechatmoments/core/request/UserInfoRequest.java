@@ -37,11 +37,11 @@ public class UserInfoRequest extends  BasicJSONRequest<Message> {
     }
 
     @Override
-    protected Message parseResult(JSONObject ob) {
+    protected Message parseResult(String ob) {
         int result = IDataOperation.REQUEST_RESULT_SUCCESS;
         UserInfo user = new UserInfo();
         try {
-            user.fromJSONData(ob);
+            user.fromJSONData(new JSONObject(ob));
             Bundle param = ((ParcelablePoolObject) mParam.obj).getData();
             param.putParcelable(IDataOperation.BUNDLE_KEY_RESULT_USER, user);
         } catch (JSONException e ) {
