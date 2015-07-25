@@ -49,7 +49,7 @@ public class TweetsRequest extends BasicJSONRequest<Message> {
                 TweetInfo tweet = new TweetInfo();
                 tweet.fromJSONData(arrays.getJSONObject(i));
                 // ignore tweets that both content and images are empty.
-                if (!TextUtils.isEmpty(tweet.content) || tweet.images == null ) {
+                if (!TextUtils.isEmpty(tweet.content) || tweet.images != null ) {
                     tweets.add(tweet);
                 }
             }

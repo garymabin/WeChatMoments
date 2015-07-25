@@ -151,8 +151,7 @@ public class BitmapUtils {
         else if (1024 * 1024 < fileSize)
             offset = 85;
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true; // 为true里只读图片的信息，如果长宽，返回的bitmap为null
-        // options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inJustDecodeBounds = true;
         options.inDither = false;
         BitmapFactory.decodeByteArray(array, 0, array.length, options);
         Bitmap bitmap = decodeByteArrayWithFixDimension(wh[0], wh[1], array,

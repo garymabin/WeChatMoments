@@ -57,7 +57,7 @@ public class TweetInfo extends BaseInfo {
             int count = imageJsonArray == null ? 0 : imageJsonArray.length();
             images = new ArrayList<>(count);
             for (int i = 0; i < count; i ++) {
-                images.add(imageJsonArray.getString(i));
+                images.add(imageJsonArray.getJSONObject(i).getString(Constants.JSON_KEY_TWEET_IMAGE_URL));
             }
         }
         if (obj.has(Constants.JSON_KEY_TWEET_COMMENTS)) {

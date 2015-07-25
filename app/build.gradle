@@ -41,4 +41,6 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.15'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.github.bluejamesbond:textjustify-android:2.1.0'
 }

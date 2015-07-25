@@ -17,5 +17,41 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="user_profile_image_height">268.7dp</dimen>
+    <dimen name="user_profile_image_width">360dp</dimen>
+    <dimen name="user_profile_image_bottom_padding">32dip</dimen>
+
+    <dimen name="user_avatar_image_height">83.3dp</dimen>
+    <dimen name="user_avatar_image_width">83.3dp</dimen>
+    <dimen name="user_avatar_image_right_margin">12dip</dimen>
+
+    <dimen name="user_nickname_right_margin">10dp</dimen>
+    <dimen name="user_nickname_bottom_margin">43.3dp</dimen>
+
+    <dimen name="tweet_base_view_top_padding">12dip</dimen>
+    <dimen name="tweet_base_view_bottom_padding">12dip</dimen>
+
+    <dimen name="tweet_sender_avatar_image_height">40dip</dimen>
+    <dimen name="tweet_sender_avatar_image_width">40dip</dimen>
+    <dimen name="tweet_avatar_image_left_margin">10dip</dimen>
+
+    <dimen name="tweet_nickname_top_margin">4dip</dimen>
+    <dimen name="tweet_nickname_bottom_margin">5dip</dimen>
+
+    <dimen name="tweet_nickname_text_size">13sp</dimen>
+    <dimen name="user_nickname_text_size">14sp</dimen>
+
+    <dimen name="tweet_single_image_left_margin">62.3dip</dimen>
+    <dimen name="tweet_single_image_fixed_height">120dip</dimen>
+    <dimen name="tweet_single_image_fixed_width">180dip</dimen>
+
+    <dimen name="tweet_more_image_height">84dip</dimen>
+    <dimen name="tweet_more_image_width">84dip</dimen>
+    <dimen name="tweet_more_image_margin">2dip</dimen>
+
+    <dimen name="tweet_content_left_margin">9dip</dimen>
+
+    <dimen name="tweet_content_more_image_fixed_width">170dip</dimen>
+
     <dimen name="activity_vertical_margin">16dp</dimen>
 </resources>

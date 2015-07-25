@@ -19,6 +19,12 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/tweet_base_view_bottom_padding">
-  <include layout="@layout/base_tweet_item_layout"/>
-  <include layout="@layout/tweet_comments_layout"/>
+    <include layout="@layout/base_tweet_item_layout"/>
+    <ImageView
+        android:id="@+id/tweet_single_image"
+        android:layout_width="@dimen/tweet_single_image_fixed_width"
+        android:layout_height="@dimen/tweet_single_image_fixed_height"
+        android:layout_marginLeft="@dimen/tweet_single_image_left_margin"
+        android:layout_marginStart="@dimen/tweet_single_image_left_margin"
+        android:contentDescription="@string/tweet_single_image_des" />
 </LinearLayout>

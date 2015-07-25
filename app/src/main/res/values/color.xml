@@ -17,5 +17,11 @@
 
 <resources>
     <color name="main_color">#3F51B5</color>
-    <color name="main_actionbar_color">#3F51B5</color>
+    <color name="main_actionbar_color">#303F9F</color>
+    <color name="main_comments_bg_color">#C5CAE9</color>
+
+    <color name="primary_text_color">#CD000000</color>
+  <color name="secondary_text_color">#8a000000</color>
+
+  <color name="main_bg_color">#0F000000</color>
 </resources>

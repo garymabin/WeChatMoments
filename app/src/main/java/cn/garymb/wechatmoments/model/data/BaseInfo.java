@@ -18,7 +18,6 @@ package cn.garymb.wechatmoments.model.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,8 +56,7 @@ public abstract class BaseInfo implements Parcelable {
 
     private static ByteBuffer expandByteBuffer(ByteBuffer buffer) {
         ByteBuffer container;
-        container = ByteBuffer.allocate((int)(buffer.capacity() * BYTE_BUFFER_GROW_SCALE));
-        Log.i(TAG, "byte buffer grow to " + container.capacity());
+        container = ByteBuffer.allocate((int) (buffer.capacity() * BYTE_BUFFER_GROW_SCALE));
         container.put(buffer.array(), 0, buffer.position());
         buffer.clear();
         return container;
@@ -133,7 +131,7 @@ public abstract class BaseInfo implements Parcelable {
 
     protected static ByteBuffer putBaseInfoList(ByteBuffer buffer, List<? extends BaseInfo> infoList) {
         if (infoList != null) {
-            buffer = putInt(buffer,  infoList.size());
+            buffer = putInt(buffer, infoList.size());
             for (BaseInfo info : infoList) {
                 buffer = putBaseInfo(buffer, info);
             }
@@ -169,7 +167,7 @@ public abstract class BaseInfo implements Parcelable {
             container = expandByteBuffer(buffer);
             buffer = container;
         }
-        container.put(value ? (byte)0 : (byte)1);
+        container.put(value ? (byte) 0 : (byte) 1);
         return buffer;
     }
 
@@ -217,7 +215,7 @@ public abstract class BaseInfo implements Parcelable {
     }
 
     protected static boolean getBoolean(ByteBuffer buffer) {
-        return buffer.get() > (byte)0;
+        return buffer.get() > (byte) 0;
     }
 
     protected static long getLong(ByteBuffer buffer) {

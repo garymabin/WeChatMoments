@@ -21,4 +21,7 @@
     <string name="action_settings">Settings</string>
     <string name="network_error">Network error</string>
     <string name="network_timeout_error">Network timeout</string>
+    <string name="tweet_sender_avatar_image_des">Tweet Sender Avatar ImageView</string>
+    <string name="tweet_single_image_des">Tweet Single ImageView</string>
+    <string name="tweet_more_images_des">Tweet More Images ImageView</string>
 </resources>
