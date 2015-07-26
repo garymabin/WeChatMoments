@@ -47,7 +47,9 @@
     <com.bluejamesbond.text.DocumentView
         android:id="@+id/tweet_sender_content_text"
         android:layout_width="match_parent"
-        ext:documentView_textColor="@color/secondary_text_color"
+        ext:documentView_antialias="true"
+        ext:documentView_cacheConfig="auto_quality"
+        ext:documentView_textColor="@color/primary_text_color"
         ext:documentView_textSize="@dimen/tweet_nickname_text_size"
         ext:documentView_textAlignment="justified"
         android:layout_height="wrap_content"

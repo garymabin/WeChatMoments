@@ -27,4 +27,5 @@
         android:layout_marginLeft="@dimen/tweet_single_image_left_margin"
         android:layout_marginStart="@dimen/tweet_single_image_left_margin"
         android:contentDescription="@string/tweet_single_image_des" />
+    <include layout="@layout/tweet_comments_layout"/>
 </LinearLayout>

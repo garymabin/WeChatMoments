@@ -35,6 +35,8 @@ public class TweetInfo extends BaseInfo {
     public String content;
     public List<CommentInfo> comments;
 
+    private boolean mErrorOccurs;
+
     @Override
     protected void readFromParcel(Parcel source) {
         images = source.createStringArrayList();
@@ -45,6 +47,10 @@ public class TweetInfo extends BaseInfo {
 
     @Override
     public void fromJSONData(JSONObject obj) throws JSONException {
+        if (obj.has(Constants.JSON_KEY_TWEET_ERROR)) {
+            setErrorOccurs(true);
+            return;
+        }
         if (obj.has(Constants.JSON_KEY_TWEET_SENDER)) {
             sender = new UserInfo();
             sender.fromJSONData(obj.getJSONObject(Constants.JSON_KEY_TWEET_SENDER));
@@ -128,4 +134,12 @@ public class TweetInfo extends BaseInfo {
             return new TweetInfo[size];
         }
     };
+
+    public boolean isErrorOccurs() {
+        return mErrorOccurs;
+    }
+
+    public void setErrorOccurs(boolean mErrorOccurs) {
+        this.mErrorOccurs = mErrorOccurs;
+    }
 }

@@ -28,6 +28,7 @@ public final class Constants {
     public static final String JSON_KEY_USER_NICK = "nick";
     public static final String JSON_KEY_USER_USERNAME = "username";
 
+    public static final String JSON_KEY_TWEET_ERROR = "error";
     public static final String JSON_KEY_TWEET_SENDER = "sender";
     public static final String JSON_KEY_TWEET_CONTENT = "content";
     public static final String JSON_KEY_TWEET_IMAGES = "images";

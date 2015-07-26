@@ -18,7 +18,6 @@ package cn.garymb.wechatmoments.core.request;
 
 import android.os.Bundle;
 import android.os.Message;
-import android.text.TextUtils;
 
 import com.android.volley.Response;
 
@@ -48,8 +47,8 @@ public class TweetsRequest extends BasicJSONRequest<Message> {
             for (int i = 0; i < size; i ++) {
                 TweetInfo tweet = new TweetInfo();
                 tweet.fromJSONData(arrays.getJSONObject(i));
-                // ignore tweets that both content and images are empty.
-                if (!TextUtils.isEmpty(tweet.content) || tweet.images != null ) {
+                // ignore tweets that error occurs.
+                if (!tweet.isErrorOccurs()) {
                     tweets.add(tweet);
                 }
             }

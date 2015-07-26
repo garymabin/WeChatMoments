@@ -49,12 +49,20 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
         public ImageView senderAvatarImage;
         public TextView senderNameText;
         public DocumentView senderContentText;
+        public RecyclerView commentsContainer;
 
-        public BaseViewHolder(View itemView) {
+        public CommentsAdapter commentsAdapter;
+
+        public BaseViewHolder(Context context, View itemView) {
             super(itemView);
             senderAvatarImage = (ImageView) itemView.findViewById(R.id.tweet_sender_avatar_image);
             senderNameText = (TextView) itemView.findViewById(R.id.tweet_sender_nick_text);
             senderContentText = (DocumentView) itemView.findViewById(R.id.tweet_sender_content_text);
+            commentsContainer = (RecyclerView) itemView.findViewById(R.id.comments_layout);
+            commentsContainer.setLayoutManager(
+                    new org.solovyev.android.views.llm.LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            commentsAdapter = new CommentsAdapter(context);
+            commentsContainer.setAdapter(commentsAdapter);
         }
     }
 
@@ -82,8 +90,8 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
 
         public ImageView imageViews[];
 
-        public MoreImgViewHolder(View itemView, Context context) {
-            super(itemView);
+        public MoreImgViewHolder(Context context, View itemView) {
+            super(context, itemView);
             imageControllers = new ImageViewItemController[MORE_IMG_MAX_IMAGES_SIZE + 1];
             imageViews = new ImageView[MORE_IMG_MAX_IMAGES_SIZE];
             imageViews[0] = (ImageView) itemView.findViewById(R.id.more_image_image1);
@@ -100,8 +108,8 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
 
     public static class ZeroImgViewHolder extends BaseViewHolder {
 
-        public ZeroImgViewHolder(View itemView) {
-            super(itemView);
+        public ZeroImgViewHolder(Context context, View itemView) {
+            super(context, itemView);
             imageControllers = new ImageViewItemController[1];
         }
     }
@@ -110,8 +118,8 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
 
         public ImageView singleImage;
 
-        public SingleImgViewHolder(View itemView) {
-            super(itemView);
+        public SingleImgViewHolder(Context context, View itemView) {
+            super(context, itemView);
             imageControllers = new ImageViewItemController[2];
             singleImage = (ImageView) itemView.findViewById(R.id.tweet_single_image);
         }
@@ -146,15 +154,15 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
                 break;
             case VIEW_TYPE_WITH_ZERO_IMAGE:
                 itemView = mInflater.inflate(R.layout.zero_image_tweet_item_layout, parent, false);
-                holder = new ZeroImgViewHolder(itemView);
+                holder = new ZeroImgViewHolder(mContext, itemView);
                 break;
             case VIEW_TYPE_WITH_SINGLE_IMAGE:
                 itemView = mInflater.inflate(R.layout.single_image_tweet_item_layout, parent, false);
-                holder = new SingleImgViewHolder(itemView);
+                holder = new SingleImgViewHolder(mContext, itemView);
                 break;
             case VIEW_TYPE_WITH_MORE_IMAGE:
                 itemView = mInflater.inflate(R.layout.more_image_tweet_item_layout, parent, false);
-                holder = new MoreImgViewHolder(itemView, mContext);
+                holder = new MoreImgViewHolder(mContext, itemView);
                 break;
         }
         if (itemView != null) {
@@ -171,9 +179,11 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
                 if (mCurrentUser != null) {
                     HeaderViewHolder hvh = (HeaderViewHolder) holder;
                     hvh.userNickNameText.setText(mCurrentUser.nick);
+                    // load profile
                     ImageItem item = new ImageItem(mRequiredSize[Constants.USER_PROFILE_IMAGE_HEIGHT_INDEX],
                             mRequiredSize[Constants.USER_PROFILE_IMAGE_WIDTH_INDEX], mCurrentUser.profileImage);
                     loadImage(hvh, HeaderViewHolder.IMAGE_CONTROLLER_USER_PROFILE_INDEX, hvh.userProfileImage, item);
+                    // load avatar
                     item = new ImageItem(mRequiredSize[Constants.USER_AVATAR_IMAGE_HEIGHT_INDEX],
                             mRequiredSize[Constants.USER_AVATAR_IMAGE_WIDTH_INDEX], mCurrentUser.avatar);
                     loadImage(hvh, HeaderViewHolder.IMAGE_CONTROLLER_USER_AVATAR_INDEX, hvh.userAvatarImage, item);
@@ -183,11 +193,13 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
             case VIEW_TYPE_WITH_ZERO_IMAGE: {
                 TweetInfo ti = mTweets.get(position - 1);
                 setSender((BaseViewHolder) holder, ti);
+                setComments((BaseViewHolder) holder, ti);
                 break;
             }
             case VIEW_TYPE_WITH_SINGLE_IMAGE: {
                 TweetInfo ti = mTweets.get(position - 1);
                 setSender((BaseViewHolder) holder, ti);
+                setComments((BaseViewHolder) holder, ti);
                 SingleImgViewHolder sivh = (SingleImgViewHolder) holder;
                 if (ti != null) {
                     ImageItem item = new ImageItem(mRequiredSize[Constants.TWEET_SENDER_SINGLE_IMAGE_WIDTH_INDEX],
@@ -199,6 +211,7 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
             case VIEW_TYPE_WITH_MORE_IMAGE: {
                 TweetInfo ti = mTweets.get(position - 1);
                 setSender((BaseViewHolder) holder, ti);
+                setComments((BaseViewHolder) holder, ti);
                 int realSize = ti.images.size() > MoreImgViewHolder.MORE_IMG_MAX_IMAGES_SIZE ? MoreImgViewHolder.MORE_IMG_MAX_IMAGES_SIZE :
                         ti.images.size();
                 MoreImgViewHolder mivh = (MoreImgViewHolder) holder;
@@ -215,6 +228,12 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
                 }
                 break;
             }
+        }
+    }
+
+    private void setComments(BaseViewHolder holder, TweetInfo ti) {
+        if (ti != null && ti.comments != null) {
+            holder.commentsAdapter.setComments(ti.comments);
         }
     }
 
@@ -262,7 +281,12 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
         if (tweets == null) {
             return;
         }
-        mTweets.addAll(tweets);
+        for (TweetInfo tweet : tweets) {
+            if (TextUtils.isEmpty(tweet.content) && tweet.images == null) {
+                continue;
+            }
+            mTweets.addLast(tweet);
+        }
         notifyDataSetChanged();
     }
 
@@ -271,9 +295,12 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
             return;
         }
         for (TweetInfo tweet : tweets) {
+            if (TextUtils.isEmpty(tweet.content) && tweet.images == null) {
+                continue;
+            }
             mTweets.addLast(tweet);
         }
-        notifyDataSetChanged();
+        updateItemAtPosition(0);
     }
 
     public void updateProfile(UserInfo user) {

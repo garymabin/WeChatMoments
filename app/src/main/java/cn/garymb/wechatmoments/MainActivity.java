@@ -19,12 +19,14 @@ package cn.garymb.wechatmoments;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 import java.util.List;
 
@@ -41,10 +43,16 @@ import cn.garymb.wechatmoments.widget.TweetsAdapter;
 
 public class MainActivity extends AppCompatActivity implements IView, IViewController {
 
+    private static final int PULL_TO_REFRESH_INCREAMENT = 5;
+
     private Toolbar mToolBar;
     private RecyclerView mListView;
-    private SwipeRefreshLayout mPullToRefreshLayout;
+    private SwipyRefreshLayout mPullToRefreshLayout;
     private TweetsAdapter mAdapter;
+
+    private List<TweetInfo> mTweets;
+
+    private int mPullToRefreshStart = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,15 +85,37 @@ public class MainActivity extends AppCompatActivity implements IView, IViewContr
         mAdapter = new TweetsAdapter(llm, this, imageSize);
         mListView.setAdapter(mAdapter);
 
-        mPullToRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.pull_to_refresh_layout);
-        mPullToRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mPullToRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.pull_to_refresh_layout);
+        mPullToRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() {
-                refreshContent();
+            public void onRefresh(SwipyRefreshLayoutDirection swipyRefreshLayoutDirection) {
+                if (SwipyRefreshLayoutDirection.TOP.equals(swipyRefreshLayoutDirection)) {
+                    mPullToRefreshStart = 0;
+                    refreshContent();
+                } else if (SwipyRefreshLayoutDirection.BOTTOM.equals(swipyRefreshLayoutDirection)) {
+                    loadMore(true);
+                }
             }
         });
         mPullToRefreshLayout.setRefreshing(true);
         refreshContent();
+    }
+
+    private void loadMore(boolean isAppend) {
+        if (mTweets == null || mTweets.size() <= mPullToRefreshStart) {
+            mPullToRefreshLayout.setRefreshing(false);
+            return;
+        }
+        int desiredSize = mPullToRefreshStart + PULL_TO_REFRESH_INCREAMENT;
+        int increament = desiredSize >= mTweets.size() ? mTweets.size() - mPullToRefreshStart
+                : PULL_TO_REFRESH_INCREAMENT;
+        if (isAppend) {
+            mAdapter.appendTweets(mTweets.subList(mPullToRefreshStart, mPullToRefreshStart + increament));
+        } else {
+            mAdapter.setTweets(mTweets.subList(mPullToRefreshStart, mPullToRefreshStart + increament));
+        }
+        mPullToRefreshStart += increament;
+        mPullToRefreshLayout.setRefreshing(false);
     }
 
     private void refreshContent() {
@@ -123,8 +153,8 @@ public class MainActivity extends AppCompatActivity implements IView, IViewContr
             case IDataOperation.REQUEST_TYPE_GET_TWEETS_INFO:
                 mPullToRefreshLayout.setRefreshing(false);
                 if (msg.arg1 == IDataOperation.REQUEST_RESULT_SUCCESS) {
-                    List<TweetInfo> tweets = result.getParcelableArrayList(IDataOperation.BUNDLE_KEY_RESULT_TWEETS);
-                    mAdapter.setTweets(tweets);
+                    mTweets = result.getParcelableArrayList(IDataOperation.BUNDLE_KEY_RESULT_TWEETS);
+                    loadMore(false);
                 }
                 break;
         }

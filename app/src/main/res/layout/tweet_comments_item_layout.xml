@@ -16,15 +16,21 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/main_comments_bg_color"
-    android:layout_marginLeft="@dimen/tweet_single_image_left_margin"
-    android:layout_marginStart="@dimen/tweet_single_image_left_margin"
-    android:layout_marginEnd="@dimen/tweet_content_right_margin"
-    android:layout_marginRight="@dimen/tweet_content_right_margin">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/comments_layout"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="@dimen/tweet_comment_item_height"
+    android:gravity="center_vertical">
+    <TextView
+        android:id="@+id/comments_nick_name_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
+        android:textSize="@dimen/tweet_nickname_text_size"
+        android:textColor="@color/primary_text_color"
+        android:text="Jack:"/>
+    <TextView
+        android:id="@+id/comments_content_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/tweet_nickname_text_size"
+        android:textColor="@color/secondary_text_color"
+        android:text="Hello World!"/>
 </LinearLayout>
