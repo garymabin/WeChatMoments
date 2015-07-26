@@ -65,10 +65,11 @@ public class CommentInfo extends BaseInfo {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("[CommentInfo]: ");
-        sb.append("sender: ").append(sender == null ? "[unspecified]" : sender.toString())
-                .append(" content: ").append(sender == null ? "[unspecified]" : content);
-        return sb.toString();
+        String str = "[CommentInfo]: sender: ";
+        str += (sender == null ? "[unspecified]" : sender.toString());
+        str += (" content: ");
+        str += (sender == null ? "[unspecified]" : content);
+        return str;
     }
 
     public static final Creator<CommentInfo> CREATOR = new Creator<CommentInfo>() {

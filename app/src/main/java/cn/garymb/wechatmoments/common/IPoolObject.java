@@ -21,11 +21,11 @@ public interface IPoolObject {
      * Initialization method. Called when an object is retrieved from the object
      * pool or has just been created.
      */
-    public void initializePoolObject();
+    void initializePoolObject();
 
     /**
      * Finalization method. Called when an object is stored in the object pool
      * to mark it as free.
      */
-    public void finalizePoolObject();
+    void finalizePoolObject();
 }

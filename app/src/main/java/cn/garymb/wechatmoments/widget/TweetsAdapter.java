@@ -130,7 +130,7 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
     private static final int VIEW_TYPE_WITH_MORE_IMAGE = 3;
     private static final int VIEW_TYPE_HEADER = 0;
 
-    private LinkedList<TweetInfo> mTweets = new LinkedList<TweetInfo>();
+    private LinkedList<TweetInfo> mTweets = new LinkedList<>();
     private UserInfo mCurrentUser;
     private LayoutInflater mInflater;
     private Context mContext;
@@ -218,7 +218,6 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
                 int i = 0;
                 for (; i < realSize; i++) {
                     mivh.imageViews[i].setVisibility(View.VISIBLE);
-
                     loadImage(mivh, i + 1, mivh.imageViews[i],
                             new ImageItem(mRequiredSize[Constants.TWEET_SENDER_MORE_IMAGE_WIDTH_INDEX],
                                     mRequiredSize[Constants.TWEET_SENDER_MORE_IMAGE_HEIGHT_INDEX], ti.images.get(i)));
@@ -232,8 +231,11 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
     }
 
     private void setComments(BaseViewHolder holder, TweetInfo ti) {
-        if (ti != null && ti.comments != null) {
+        if (ti != null && ti.comments != null && ti.comments.size() != 0) {
+            holder.commentsContainer.setVisibility(View.VISIBLE);
             holder.commentsAdapter.setComments(ti.comments);
+        } else {
+            holder.commentsContainer.setVisibility(View.GONE);
         }
     }
 
@@ -247,7 +249,10 @@ public class TweetsAdapter extends RecyclerViewImageAdapter implements IViewCont
                 holder.senderContentText.setText(ti.content);
             }
             if (!TextUtils.isEmpty(ti.sender.nick)) {
+                holder.senderNameText.setVisibility(View.VISIBLE);
                 holder.senderNameText.setText(ti.sender.nick);
+            } else {
+                holder.senderNameText.setVisibility(View.GONE);
             }
         }
     }

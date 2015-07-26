@@ -38,7 +38,7 @@ public class ImageModelHelper extends Handler implements IDataOperation, ITask.T
 
     private static final String TAG = "ImageModelHelper";
 
-    private WeakHashMap<BitmapHolder, IViewController> mNotifyTargets = new WeakHashMap<BitmapHolder, IViewController>();
+    private WeakHashMap<BitmapHolder, IViewController> mNotifyTargets = new WeakHashMap<>();
     private ICache<String, Bitmap> mCache;
     private IExecutors mExecutors;
 
@@ -51,7 +51,7 @@ public class ImageModelHelper extends Handler implements IDataOperation, ITask.T
     @Override
     public void requestDataOperation(IViewController target, Message msg) {
         BitmapHolder holder = new BitmapHolder(msg, null);
-        ITask<?> task = null;
+        ITask<?> task;
         if (msg.what == IDataOperation.REQUEST_TYPE_DECODE_IMAGE_BITMAP) {
             task = new DecodeTask(holder, this, mCache);
         } else {

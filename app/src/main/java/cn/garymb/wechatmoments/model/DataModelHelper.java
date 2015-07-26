@@ -32,7 +32,7 @@ public class DataModelHelper implements IDataOperation, ITask.TaskCallback<Messa
 
     public DataModelHelper(IExecutors executors) {
         mExecutors = executors;
-        mNotifyTargets = new WeakHashMap<Message, IViewController>();
+        mNotifyTargets = new WeakHashMap<>();
     }
 
 

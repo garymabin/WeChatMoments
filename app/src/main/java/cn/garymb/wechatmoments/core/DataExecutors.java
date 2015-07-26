@@ -47,7 +47,7 @@ public class DataExecutors implements IExecutors, PretreatThread.PretreatCallbac
 
     private RequestQueue mNetworkQueue;
     private PretreatThread mPretreatThread;
-    private LinkedBlockingDeque<ITask<?>> mPretreatQueue = new LinkedBlockingDeque<ITask<?>>();
+    private LinkedBlockingDeque<ITask<?>> mPretreatQueue = new LinkedBlockingDeque<>();
     private Handler mResponseHandler;
 
     public DataExecutors(RequestQueue queue) {

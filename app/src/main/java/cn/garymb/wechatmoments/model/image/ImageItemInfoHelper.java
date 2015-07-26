@@ -31,10 +31,7 @@ public class ImageItemInfoHelper {
 
     public static boolean isImageExist(ImageItem item) {
         File imageFile = new File(sCacheDir, item.hashCode() + "");
-        if (imageFile != null && imageFile.exists()) {
-            return true;
-        }
-        return false;
+        return imageFile != null && imageFile.exists();
     }
 
     public static String getImageSavedPath(ImageItem item) {

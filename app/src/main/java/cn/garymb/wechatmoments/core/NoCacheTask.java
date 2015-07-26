@@ -16,13 +16,11 @@
 
 package cn.garymb.wechatmoments.core;
 
-import android.os.Bundle;
 import android.os.Message;
 
 import com.android.volley.Request;
 
 import cn.garymb.wechatmoments.common.Constants;
-import cn.garymb.wechatmoments.common.ParcelablePoolObject;
 import cn.garymb.wechatmoments.core.request.TweetsRequest;
 import cn.garymb.wechatmoments.core.request.UserInfoRequest;
 import cn.garymb.wechatmoments.model.IDataOperation;
@@ -41,7 +39,6 @@ public class NoCacheTask extends BaseDataTask {
     @Override
     public Request<?> getVolleyRequest() {
         Request<?> request = null;
-        Bundle param = ((ParcelablePoolObject) mData.obj).getData();
         switch (mData.what) {
             case IDataOperation.REQUEST_TYPE_GET_USER_INFO:
                 request = new UserInfoRequest(Constants.USER_URL, this, this, mData);

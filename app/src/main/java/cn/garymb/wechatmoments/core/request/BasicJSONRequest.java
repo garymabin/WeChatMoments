@@ -44,12 +44,6 @@ public abstract class BasicJSONRequest<T> extends JsonRequest<T> {
     protected Message mParam;
     protected String mGetUrl;
 
-    public BasicJSONRequest(int method, String url, Listener<T> listener,
-                            ErrorListener errorListener, Message param) {
-        super(method, url, "", listener, errorListener);
-        mParam = param;
-    }
-
     public BasicJSONRequest(String url, Listener<T> listener,
                             ErrorListener errorListener, Message param) {
         super(Method.GET, url, "", listener, errorListener);
@@ -99,12 +93,10 @@ public abstract class BasicJSONRequest<T> extends JsonRequest<T> {
         try {
             String jsonString = new String(response.data,
                     HttpHeaderParser.parseCharset(response.headers));
-            if (jsonString != null) {
-                if (LogLevel.isLoggerable(LogLevel.DEBUG)) {
-                    Log.d(TAG, "receive json result: " + jsonString);
-                }
-                return Response.success(parseResult(jsonString), getCacheEntry());
+            if (LogLevel.isLoggerable(LogLevel.DEBUG)) {
+                Log.d(TAG, "receive json result: " + jsonString);
             }
+            return Response.success(parseResult(jsonString), getCacheEntry());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             error = "unsupported encoding";

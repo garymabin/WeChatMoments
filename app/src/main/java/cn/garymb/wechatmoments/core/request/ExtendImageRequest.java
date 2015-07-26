@@ -159,6 +159,7 @@ public class ExtendImageRequest extends Request<BitmapHolder> {
                 try {
                     fos.close();
                 } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -170,7 +171,7 @@ public class ExtendImageRequest extends Request<BitmapHolder> {
     private Response<BitmapHolder> doParse(NetworkResponse response) {
         byte[] data = response.data;
         BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         if (mImageItem.width == 0 && mImageItem.height == 0) {
             decodeOptions.inPreferredConfig = mDecodeConfig;
             bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, decodeOptions);

@@ -22,5 +22,5 @@ public interface IPoolObjectFactory {
      *
      * @return new object instance for the object pool
      */
-    public IPoolObject createPoolObject();
+    IPoolObject createPoolObject();
 }

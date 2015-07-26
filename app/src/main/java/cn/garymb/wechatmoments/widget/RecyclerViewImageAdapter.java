@@ -51,7 +51,7 @@ public abstract class RecyclerViewImageAdapter extends RecyclerView.Adapter<Recy
     }
 
     protected void requestImage(ImageItem item) {
-        Message msg = null;
+        Message msg;
         ParcelablePoolObject poolObj = Model.peekInstance().peekPoolObject();
         Bundle param = poolObj.getData();
         param.putParcelable(IDataOperation.BUNDLE_KEY_PARAM_IMAGE_REQUEST_ITEM, item);

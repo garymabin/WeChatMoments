@@ -27,9 +27,7 @@ public abstract class AbstractImageItemController {
 
 
     public boolean isLoaded(ImageItem item) {
-        if (mIsLoaded && mImageItem != null && mImageItem.equals(item))
-            return true;
-        return false;
+        return mIsLoaded && mImageItem != null && mImageItem.equals(item);
     }
 
     public void setImageItem(ImageItem item) {

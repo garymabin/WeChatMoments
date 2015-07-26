@@ -21,7 +21,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 import cn.garymb.wechatmoments.model.IDataOperation;
 
 public class PretreatThread extends Thread {
-    private static final String TAG = "CacheThread";
 
     public interface PretreatCallback {
         void onPretreatComplete(ITask<?> task, int result);
@@ -42,7 +41,7 @@ public class PretreatThread extends Thread {
     public void run() {
         while (!isTerminated) {
             int result = IDataOperation.REQUEST_RESULT_FAILED;
-            ITask<?> task = null;
+            ITask<?> task;
             try {
                 task = mPretreatQueue.take();
             } catch (InterruptedException e) {
@@ -59,6 +58,7 @@ public class PretreatThread extends Thread {
         }
     }
 
+    @SuppressWarnings("unused")
     public void terminate() {
         isTerminated = true;
         interrupt();

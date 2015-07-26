@@ -42,8 +42,8 @@ public class TweetsRequest extends BasicJSONRequest<Message> {
         int result = IDataOperation.REQUEST_RESULT_SUCCESS;
         try {
             JSONArray arrays = new JSONArray(ob);
-            int size = arrays == null ? 0 : arrays.length();
-            ArrayList<TweetInfo> tweets = new ArrayList<TweetInfo>(size);
+            int size = arrays.length();
+            ArrayList<TweetInfo> tweets = new ArrayList<>(size);
             for (int i = 0; i < size; i ++) {
                 TweetInfo tweet = new TweetInfo();
                 tweet.fromJSONData(arrays.getJSONObject(i));

@@ -28,6 +28,7 @@ public class WCMDataError extends VolleyError {
         mParam = param;
     }
 
+    @SuppressWarnings("unused")
     public WCMDataError(String message, Object param) {
         super(message);
         mParam = param;

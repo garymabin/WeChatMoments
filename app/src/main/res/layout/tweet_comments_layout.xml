@@ -19,6 +19,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_comments_bg_color"
+    android:layout_marginTop="@dimen/tweet_comment_item_top_margin"
     android:layout_marginLeft="@dimen/tweet_single_image_left_margin"
     android:layout_marginStart="@dimen/tweet_single_image_left_margin"
     android:layout_marginEnd="@dimen/tweet_content_right_margin"

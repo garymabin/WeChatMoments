@@ -19,7 +19,6 @@ package cn.garymb.wechatmoments.model;
 import android.graphics.Bitmap;
 import android.os.Message;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -37,9 +36,7 @@ public class Model implements  IDataOperation{
     private static final int MAX_BUNDLE_FACTORY_SIZE = 20;
 
     private static Model INSTANCE;
-    private RequestQueue mDataQueue;
     private ParcelableObjectPool mBundlePool;
-    private DataExecutors mExecutors;
     private ImageModelHelper mImageModelHelper;
     private DataModelHelper mDataModelHelper;
 
@@ -51,11 +48,10 @@ public class Model implements  IDataOperation{
     }
 
     private Model(StaticApplication app) {
-        mDataQueue = Volley.newRequestQueue(app, new OkHttpStack(new OkHttpClient()));
         mBundlePool = new ParcelableObjectPool(new ParcelablePoolObjectFactory(), MAX_BUNDLE_FACTORY_SIZE);
-        mExecutors = new DataExecutors(mDataQueue);
-        mImageModelHelper = new ImageModelHelper(mExecutors);
-        mDataModelHelper = new DataModelHelper(mExecutors);
+        DataExecutors executors = new DataExecutors(Volley.newRequestQueue(app, new OkHttpStack(new OkHttpClient())));
+        mImageModelHelper = new ImageModelHelper(executors);
+        mDataModelHelper = new DataModelHelper(executors);
     }
 
     @Override

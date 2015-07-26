@@ -16,12 +16,6 @@
   -->
 
 <resources>
-    <color name="main_color">#3F51B5</color>
-    <color name="main_actionbar_color">#303F9F</color>
-    <color name="main_comments_bg_color">#C5CAE9</color>
-
-    <color name="primary_text_color">#CD000000</color>
-  <color name="secondary_text_color">#8a000000</color>
-
-  <color name="main_bg_color">#FAFAFA</color>
+    <dimen name="tweet_more_image_height">84dip</dimen>
+    <dimen name="tweet_more_image_width">84dip</dimen>
 </resources>

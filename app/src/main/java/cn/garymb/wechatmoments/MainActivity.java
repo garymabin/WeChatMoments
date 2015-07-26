@@ -17,6 +17,7 @@
 package cn.garymb.wechatmoments;
 
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
@@ -24,6 +25,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
@@ -45,8 +49,6 @@ public class MainActivity extends AppCompatActivity implements IView, IViewContr
 
     private static final int PULL_TO_REFRESH_INCREAMENT = 5;
 
-    private Toolbar mToolBar;
-    private RecyclerView mListView;
     private SwipyRefreshLayout mPullToRefreshLayout;
     private TweetsAdapter mAdapter;
 
@@ -58,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements IView, IViewContr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolBar);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         initActionBar();
         initView();
+        setStatusBarColor(findViewById(R.id.statusBarBackground), getResources().getColor(R.color.main_actionbar_color));
         refreshUserProfile();
     }
 
@@ -79,11 +81,11 @@ public class MainActivity extends AppCompatActivity implements IView, IViewContr
         imageSize[Constants.USER_AVATAR_IMAGE_HEIGHT_INDEX] = res.getDimensionPixelSize(R.dimen.user_avatar_image_height);
         imageSize[Constants.USER_AVATAR_IMAGE_WIDTH_INDEX] = res.getDimensionPixelSize(R.dimen.user_avatar_image_width);
 
-        mListView = (RecyclerView) findViewById(R.id.moments_list);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.moments_list);
         LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mListView.setLayoutManager(llm);
+        recyclerView.setLayoutManager(llm);
         mAdapter = new TweetsAdapter(llm, this, imageSize);
-        mListView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
 
         mPullToRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.pull_to_refresh_layout);
         mPullToRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
@@ -134,9 +136,11 @@ public class MainActivity extends AppCompatActivity implements IView, IViewContr
 
     private void initActionBar() {
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setHomeButtonEnabled(true);
-        ab.setDisplayShowTitleEnabled(true);
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
+            ab.setDisplayShowTitleEnabled(true);
+        }
     }
 
     @Override
@@ -160,5 +164,27 @@ public class MainActivity extends AppCompatActivity implements IView, IViewContr
         }
         Model.peekInstance().freePoolObject(ppo);
         return false;
+    }
+
+    private void setStatusBarColor(View statusBar, int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // action bar height
+            statusBar.getLayoutParams().height = getStatusBarHeight();
+            statusBar.setBackgroundColor(color);
+        } else {
+            findViewById(R.id.statusBarBackground).setVisibility(View.GONE);
+        }
+    }
+
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }

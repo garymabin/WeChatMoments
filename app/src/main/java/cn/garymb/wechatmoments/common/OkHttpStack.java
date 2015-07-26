@@ -95,7 +95,7 @@ public class OkHttpStack implements HttpStack {
     public HttpResponse performRequest(Request<?> request, Map<String, String> additionalHeaders)
             throws IOException, AuthFailureError {
         String url = request.getUrl();
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<>();
         map.putAll(request.getHeaders());
         map.putAll(additionalHeaders);
         if (mUrlRewriter != null) {
@@ -133,11 +133,6 @@ public class OkHttpStack implements HttpStack {
         return response;
     }
 
-    /**
-     * Initializes an {@link HttpEntity} from the given {@link HttpURLConnection}.
-     * @param connection
-     * @return an HttpEntity populated with data from <code>connection</code>.
-     */
     @SuppressWarnings("deprecation")
     private static HttpEntity entityFromConnection(HttpURLConnection connection) {
         BasicHttpEntity entity = new BasicHttpEntity();
@@ -154,19 +149,6 @@ public class OkHttpStack implements HttpStack {
         return entity;
     }
 
-    /**
-     * Create an {@link HttpURLConnection} for the specified {@code url}.
-     */
-    protected HttpURLConnection createConnection(URL url) throws IOException {
-        return (HttpURLConnection) url.openConnection();
-    }
-
-    /**
-     * Opens an {@link HttpURLConnection} with parameters.
-     * @param url
-     * @return an open connection
-     * @throws IOException
-     */
     private HttpURLConnection openOkHttpURLConnection(OkUrlFactory factory, URL url, Request<?> request) throws IOException {
         HttpURLConnection connection = factory.open(url);
         int timeoutMs = request.getTimeoutMs();

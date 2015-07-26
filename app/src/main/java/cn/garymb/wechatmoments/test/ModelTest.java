@@ -28,10 +28,14 @@ import cn.garymb.wechatmoments.common.ParcelablePoolObject;
 import cn.garymb.wechatmoments.controller.IViewController;
 import cn.garymb.wechatmoments.model.IDataOperation;
 import cn.garymb.wechatmoments.model.Model;
+import cn.garymb.wechatmoments.model.data.ImageItem;
 import cn.garymb.wechatmoments.model.data.TweetInfo;
 import cn.garymb.wechatmoments.model.data.UserInfo;
+import cn.garymb.wechatmoments.model.image.BitmapHolder;
 
 public class ModelTest extends InstrumentationTestCase {
+
+    private static final String TEST_IMAGE_URL = "http://i.ytimg.com/vi/rGWI7mjmnNk/hqdefault.jpg";
 
     private CountDownLatch signal;
 
@@ -44,26 +48,46 @@ public class ModelTest extends InstrumentationTestCase {
         }
         @Override
         public boolean handleMessage(Message msg) {
-            ParcelablePoolObject ppo = (ParcelablePoolObject) msg.obj;
-            Bundle result = ppo.getData();
+
             switch (msg.what) {
-                case IDataOperation.REQUEST_TYPE_GET_USER_INFO:
-                    UserInfo user = result.getParcelable(IDataOperation.BUNDLE_KEY_RESULT_USER);
-                    assertNotNull(user);
-                    Log.v("ModelTest", "testRetriveUserInfo: " + user.toString());
+                case IDataOperation.REQUEST_TYPE_GET_USER_INFO: {
+                    ParcelablePoolObject ppo = (ParcelablePoolObject) msg.obj;
+                    Bundle result = ppo.getData();
+                    if (msg.arg1 == IDataOperation.REQUEST_RESULT_SUCCESS) {
+                        UserInfo user = result.getParcelable(IDataOperation.BUNDLE_KEY_RESULT_USER);
+                        assertNotNull(user);
+                        Log.v("ModelTest", "testRetriveUserInfo: " + user.toString());
+                    }
+                    Model.peekInstance().freePoolObject(ppo);
                     internalSignal.countDown();
                     break;
-                case IDataOperation.REQUEST_TYPE_GET_TWEETS_INFO:
-                    List<TweetInfo> tweets = result.getParcelableArrayList(IDataOperation.BUNDLE_KEY_RESULT_TWEETS);
-                    assertNotNull(tweets);
-                    dumpTweets(tweets);
+                }
+                case IDataOperation.REQUEST_TYPE_GET_TWEETS_INFO: {
+                    ParcelablePoolObject ppo = (ParcelablePoolObject) msg.obj;
+                    Bundle result = ppo.getData();
+                    if (msg.arg1 == IDataOperation.REQUEST_RESULT_SUCCESS) {
+                        List<TweetInfo> tweets = result.getParcelableArrayList(IDataOperation.BUNDLE_KEY_RESULT_TWEETS);
+                        assertNotNull(tweets);
+                        dumpTweets(tweets);
+                    }
+                    Model.peekInstance().freePoolObject(ppo);
                     internalSignal.countDown();
                     break;
-                case IDataOperation.REQUEST_TYPE_GET_IMAGE_BITMAP:
+                }
                 case IDataOperation.REQUEST_TYPE_DECODE_IMAGE_BITMAP:
+                case IDataOperation.REQUEST_TYPE_GET_IMAGE_BITMAP: {
+                    BitmapHolder holder = ((BitmapHolder) msg.obj);
+                    if (msg.arg1 == IDataOperation.REQUEST_RESULT_SUCCESS) {
+                        assertNotNull(holder);
+                        assertNotNull(holder.getBitmap());
+                        assertEquals(holder.getBitmap().getWidth(), 80);
+                        assertEquals(holder.getBitmap().getHeight(), 80);
+                    }
+                    internalSignal.countDown();
+                    Model.peekInstance().freePoolObject(holder.getParam());
                     break;
+                }
             }
-            Model.peekInstance().freePoolObject(ppo);
             return false;
         }
 
@@ -95,5 +119,27 @@ public class ModelTest extends InstrumentationTestCase {
         Message msg = Message.obtain(null, IDataOperation.REQUEST_TYPE_GET_TWEETS_INFO, ppo);
         Model.peekInstance().requestDataOperation(new MockViewController(signal), msg);
         signal.await();
+    }
+
+    public void testRetriveImageWithDesiredSize() throws InterruptedException {
+        signal = new CountDownLatch(1);
+        ImageItem item = new ImageItem(80, 80, TEST_IMAGE_URL);
+        ParcelablePoolObject poolObj = Model.peekInstance().peekPoolObject();
+        Bundle param = poolObj.getData();
+        param.putParcelable(IDataOperation.BUNDLE_KEY_PARAM_IMAGE_REQUEST_ITEM, item);
+        Message msg = Message.obtain(null, IDataOperation.REQUEST_TYPE_GET_IMAGE_BITMAP, poolObj);
+        msg.setData(param);
+        Model.peekInstance().requestDataOperation(new MockViewController(signal), msg);
+    }
+
+    public void testDocodeImageWithDesiredSize() throws InterruptedException {
+        signal = new CountDownLatch(1);
+        ImageItem item = new ImageItem(80, 80, TEST_IMAGE_URL);
+        ParcelablePoolObject poolObj = Model.peekInstance().peekPoolObject();
+        Bundle param = poolObj.getData();
+        param.putParcelable(IDataOperation.BUNDLE_KEY_PARAM_IMAGE_REQUEST_ITEM, item);
+        Message msg = Message.obtain(null, IDataOperation.REQUEST_TYPE_DECODE_IMAGE_BITMAP, poolObj);
+        msg.setData(param);
+        Model.peekInstance().requestDataOperation(new MockViewController(signal), msg);
     }
  }

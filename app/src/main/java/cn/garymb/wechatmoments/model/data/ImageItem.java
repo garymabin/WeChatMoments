@@ -84,9 +84,7 @@ public class ImageItem extends BaseInfo {
             return false;
 
         ImageItem target = (ImageItem) o;
-        if (this.id != null && this.id.equals(target.id))
-            return true;
-        return false;
+        return this.id != null && this.id.equals(target.id);
     }
 
     @Override

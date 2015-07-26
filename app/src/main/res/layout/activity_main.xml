@@ -21,12 +21,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:background="@color/main_bg_color">
+    <View
+        android:id="@+id/statusBarBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
     <include
         android:id="@+id/toolbar"
         layout="@layout/global_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"/>
+        android:layout_below="@id/statusBarBackground"/>
     <com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
         android:id="@+id/pull_to_refresh_layout"
         app:direction="both"

@@ -39,17 +39,20 @@
     <dimen name="tweet_single_image_fixed_height">120dip</dimen>
     <dimen name="tweet_single_image_fixed_width">180dip</dimen>
 
-    <dimen name="tweet_more_image_height">84dip</dimen>
-    <dimen name="tweet_more_image_width">84dip</dimen>
+    <dimen name="tweet_more_image_height">90dip</dimen>
+    <dimen name="tweet_more_image_width">90dip</dimen>
     <dimen name="tweet_more_image_margin">2dip</dimen>
 
     <dimen name="tweet_content_left_margin">9dip</dimen>
     <dimen name="tweet_content_right_margin">12dip</dimen>
     <dimen name="tweet_content_more_image_fixed_width">170dip</dimen>
 
+    <dimen name="tweet_comment_item_top_margin">5dip</dimen>
+    <dimen name="tweet_comments_padding">5dip</dimen>
     <dimen name="tweet_comment_item_height">25dip</dimen>
 
     <!-- text size-->
-    <dimen name="tweet_nickname_text_size">13sp</dimen>
-    <dimen name="user_nickname_text_size">14sp</dimen>
+    <dimen name="tweet_nickname_text_size">14sp</dimen>
+    <dimen name="tweet_content_text_size">13sp</dimen>
+    <dimen name="user_nickname_text_size">15sp</dimen>
 </resources>

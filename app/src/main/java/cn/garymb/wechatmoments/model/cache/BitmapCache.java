@@ -32,7 +32,7 @@ public class BitmapCache implements ICache<String, Bitmap> {
         Runtime rt = Runtime.getRuntime();
         long maxMemory = rt.maxMemory();
         Log.i(TAG, "set maxMemory to:" + Long.toString(maxMemory));
-        mInternalCache = new BitmapLruCache<String>(DEFAULT_BITMAP_CACHE_COUNT, maxMemory / 10);
+        mInternalCache = new BitmapLruCache<>(DEFAULT_BITMAP_CACHE_COUNT, maxMemory / 10);
     }
 
     @Override

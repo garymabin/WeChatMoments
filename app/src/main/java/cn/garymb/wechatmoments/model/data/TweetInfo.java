@@ -62,7 +62,7 @@ public class TweetInfo extends BaseInfo {
             JSONArray imageJsonArray = obj.getJSONArray(Constants.JSON_KEY_TWEET_IMAGES);
             int count = imageJsonArray == null ? 0 : imageJsonArray.length();
             images = new ArrayList<>(count);
-            for (int i = 0; i < count; i ++) {
+            for (int i = 0; i < count; i++) {
                 images.add(imageJsonArray.getJSONObject(i).getString(Constants.JSON_KEY_TWEET_IMAGE_URL));
             }
         }
@@ -70,7 +70,7 @@ public class TweetInfo extends BaseInfo {
             JSONArray commentJsonArray = obj.getJSONArray(Constants.JSON_KEY_TWEET_COMMENTS);
             int count = commentJsonArray == null ? 0 : commentJsonArray.length();
             comments = new ArrayList<>(count);
-            for (int i = 0; i < count; i ++) {
+            for (int i = 0; i < count; i++) {
                 CommentInfo comment = new CommentInfo();
                 comment.fromJSONData(commentJsonArray.getJSONObject(i));
                 comments.add(comment);
@@ -96,12 +96,16 @@ public class TweetInfo extends BaseInfo {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("[TweetInfo]: ");
-        sb.append("images: ").append(images == null ? "[unspecified]" : dumpImages())
-                .append(" sender: ").append(sender == null ? "[unspecified]" : sender.toString())
-                .append(" content: ").append(content == null ? "[unspecified]" : content)
-                .append(" comments: ").append(comments == null ? "[unspecified]" : dumpComments());
-        return sb.toString();
+        String str = "[TweetInfo]: ";
+        str += ("images: ");
+        str += (images == null ? "[unspecified]" : dumpImages());
+        str += (" sender: ");
+        str += (sender == null ? "[unspecified]" : sender.toString());
+        str += (" content: ");
+        str += (content == null ? "[unspecified]" : content);
+        str += (" comments: ");
+        str += (comments == null ? "[unspecified]" : dumpComments());
+        return str;
     }
 
     private String dumpComments() {

@@ -16,16 +16,10 @@
 
 package cn.garymb.wechatmoments.common;
 
-import android.content.Context;
-import android.graphics.Matrix;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.PointF;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.Matrix;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -35,36 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class BitmapUtils {
-    /**
-     * Mix two Bitmap as one.
-     *
-     * @param first
-     *            the first bitmap to mix
-     * @param second
-     *            the second bitmap to mix
-     * @param fromPoint
-     *            where the second bitmap is painted.
-     * @return
-     */
-    public static Drawable mixtureBitmap(Context context, Bitmap first,
-                                         Bitmap second, PointF fromPoint) {
-        if (first == null || second == null || fromPoint == null) {
-            return null;
-        }
-        Bitmap newBitmap = Bitmap.createBitmap(first.getWidth(),
-                first.getHeight(), Config.ARGB_8888);
-        Canvas cv = new Canvas(newBitmap);
-        cv.drawBitmap(first, 0, 0, null);
-        cv.drawBitmap(second, fromPoint.x, fromPoint.y, null);
-        cv.save(Canvas.ALL_SAVE_FLAG);
-        cv.restore();
-
-        BitmapDrawable bitmapDrawable = new BitmapDrawable(
-                context.getResources(), newBitmap);
-        Drawable drawable = (Drawable) bitmapDrawable;
-        return drawable;
-    }
-
     public static Bitmap createNewBitmapWithResource(Resources res, int resID,
                                                      int wh[], boolean forceResize) {
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -84,18 +48,6 @@ public class BitmapUtils {
         Bitmap bitmap = BitmapFactory.decodeResource(res, resID, options);
 
         return decodeWithFixDimension(requestWidth, wh[1], bitmap, options, forceResize);
-    }
-
-    public static Bitmap createNewBitmapFromStream(InputStream is,
-                                                   int wh[], boolean forceResize) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        options.inDither = false;
-
-        BitmapFactory.decodeStream(is, null, options);
-
-        return decodeWithFixDimension(wh[0], wh[1], is, options, forceResize);
     }
 
     public static Bitmap createNewBitmapAndCompressByFile(String filePath,
@@ -123,29 +75,10 @@ public class BitmapUtils {
         return bitmap;
     }
 
-    public static Bitmap createNewBitmapWithoutCompress(String filePath) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = false;
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        options.inDither = false;
-        Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
-        return bitmap;
-    }
-
-    public static Bitmap createNewBitmapWithoutCompress(InputStream is) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = false;
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        options.inDither = false;
-        Bitmap bitmap = BitmapFactory.decodeStream(is, null, options);
-        return bitmap;
-    }
-
     public static Bitmap createNewBitmapAndCompressByByteArray(byte[] array,
                                                                int wh[], boolean forceResize) {
         int offset = 100;
-        long fileSize = 0;
-        fileSize = array.length;
+        long fileSize = array.length;
         if (200 * 1024 < fileSize && fileSize <= 1024 * 1024)
             offset = 90;
         else if (1024 * 1024 < fileSize)
@@ -162,18 +95,6 @@ public class BitmapUtils {
         return bitmap;
     }
 
-    public static Bitmap createNewBitmapAndCompressByFile(String filePath,
-                                                          int width, boolean forceResize) {
-        return createNewBitmapAndCompressByFile(filePath,
-                new int[] { width, -1 }, forceResize);
-    }
-
-    public static Bitmap createNewBitmapFromStream(InputStream is,
-                                                   int width, boolean forceResize) {
-        return createNewBitmapFromStream(is,
-                new int[] { width, -1 }, forceResize);
-    }
-
     private static Bitmap compressBitmapFile(int offset, long fileSize,
                                              Bitmap bitmap) {
         if (offset == 100)
@@ -188,10 +109,8 @@ public class BitmapUtils {
 
     private static Bitmap decodeWithFixDimension(int width, int height,
                                                  Bitmap bmp, BitmapFactory.Options options, boolean forceResize) {
-        int requestWidth = width;
-        int requestHeight = height;
         int bmpWidth = options.outWidth;
-        float inSampleSize = (float) bmpWidth / (float) requestWidth;
+        float inSampleSize = (float) bmpWidth / (float) width;
         if (inSampleSize > 1.0 && inSampleSize < 2.0) {
             options.inSampleSize = 2;
         } else if (inSampleSize >= 2.0) {
@@ -204,7 +123,7 @@ public class BitmapUtils {
         Bitmap bitmap = bmp;
         try {
             if (bitmap != null) {
-                float scale = ((float) requestWidth / options.outWidth);
+                float scale = ((float) width / options.outWidth);
                 Matrix matrix = new Matrix();
                 matrix.setScale(scale, scale);
                 if (scale < 1.0 || forceResize
@@ -212,9 +131,9 @@ public class BitmapUtils {
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0,
                             options.outWidth, options.outHeight, matrix, true);
                 }
-                if (requestHeight != -1 && bitmap.getHeight() > requestHeight) {
+                if (height != -1 && bitmap.getHeight() > height) {
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0,
-                            bitmap.getWidth(), requestHeight);
+                            bitmap.getWidth(), height);
                 }
             }
         } catch (OutOfMemoryError e) {
@@ -226,10 +145,8 @@ public class BitmapUtils {
 
     private static Bitmap decodeWithFixDimension(int width, int height,
                                                  InputStream is, BitmapFactory.Options options, boolean forceResize) {
-        int requestWidth = width;
-        int requestHeight = height;
         int bmpWidth = options.outWidth;
-        float inSampleSize = (float) bmpWidth / (float) requestWidth;
+        float inSampleSize = (float) bmpWidth / (float) width;
         if (inSampleSize > 1.0 && inSampleSize < 2.0) {
             options.inSampleSize = 2;// set scale factor
         } else if (inSampleSize >= 2.0) {
@@ -243,7 +160,7 @@ public class BitmapUtils {
         try {
             bitmap = BitmapFactory.decodeStream(is, null, options);
             if (bitmap != null) {
-                float scale = ((float) requestWidth / options.outWidth);
+                float scale = ((float) width / options.outWidth);
                 Matrix matrix = new Matrix();
                 matrix.setScale(scale, scale);
                 // there are three situations to execute force scale；
@@ -255,9 +172,9 @@ public class BitmapUtils {
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0,
                             options.outWidth, options.outHeight, matrix, true);
                 }
-                if (requestHeight != -1 && bitmap.getHeight() > requestHeight) {
+                if (height != -1 && bitmap.getHeight() > height) {
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0,
-                            bitmap.getWidth(), requestHeight);
+                            bitmap.getWidth(), height);
                 }
             }
         } catch (OutOfMemoryError e) {
@@ -268,6 +185,7 @@ public class BitmapUtils {
                 try {
                     is.close();
                 } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -288,22 +206,20 @@ public class BitmapUtils {
     private static Bitmap decodeByteArrayWithFixDimension(int width,
                                                           int height, byte[] array, BitmapFactory.Options options,
                                                           boolean forceResize) {
-        int requestWidth = width;
-        int requestHeight = height;
         int bmpWidth = options.outWidth;
-        float inSampleSize = (float) bmpWidth / (float) requestWidth;
+        float inSampleSize = (float) bmpWidth / (float) width;
         if (inSampleSize > 1.0 && inSampleSize < 2.0) {
-            options.inSampleSize = 2;// set scale factor
+            options.inSampleSize = 2;
         } else if (inSampleSize >= 2.0) {
             options.inSampleSize = (int) inSampleSize;
         }
         options.inJustDecodeBounds = false;
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         try {
             bitmap = BitmapFactory.decodeByteArray(array, 0, array.length,
                     options);
             if (bitmap != null) {
-                float scale = ((float) requestWidth / options.outWidth);
+                float scale = ((float) width / options.outWidth);
                 Matrix matrix = new Matrix();
                 matrix.setScale(scale, scale);
                 // there are three situations to execute force scale；
@@ -315,9 +231,9 @@ public class BitmapUtils {
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0,
                             options.outWidth, options.outHeight, matrix, true);
                 }
-                if (requestHeight != -1 && bitmap.getHeight() > requestHeight) {
+                if (height != -1 && bitmap.getHeight() > height) {
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0,
-                            bitmap.getWidth(), requestHeight);
+                            bitmap.getWidth(), height);
                 }
             }
         } catch (OutOfMemoryError e) {

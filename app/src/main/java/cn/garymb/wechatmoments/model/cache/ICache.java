@@ -16,6 +16,7 @@
 
 package cn.garymb.wechatmoments.model.cache;
 
+@SuppressWarnings("unused")
 public interface ICache<K, V> {
     V getCache(K key);
     void put(K key, V cache);

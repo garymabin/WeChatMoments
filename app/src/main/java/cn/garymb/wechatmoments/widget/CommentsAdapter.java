@@ -53,8 +53,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = mInflater.inflate(R.layout.tweet_comments_item_layout, parent, false);
-        CommentsViewHolder holder = new CommentsViewHolder(v);
-        return holder;
+        return new CommentsViewHolder(v);
     }
 
     @Override
@@ -63,7 +62,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         CommentsViewHolder cv = (CommentsViewHolder) holder;
         if (ci != null) {
             if (ci.sender != null && !TextUtils.isEmpty(ci.sender.nick)) {
-                cv.senderText.setText(ci.sender.nick);
+                cv.senderText.setText(ci.sender.nick + ": ");
             }
             if (!TextUtils.isEmpty(ci.content)) {
                 cv.contentText.setText(ci.content);

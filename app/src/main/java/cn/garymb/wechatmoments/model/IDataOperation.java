@@ -23,25 +23,27 @@ import cn.garymb.wechatmoments.controller.IViewController;
 public interface IDataOperation {
 
     //request code
-    static final int REQUEST_RESULT_SUCCESS = 0;
-    static final int REQUEST_RESULT_FAILED = -1;
-    static final int REQUEST_RESULT_NO_DATA = -2;
-    static final int REQUEST_RESULT_TIMEOUT = -3;
-    static final int REQUEST_RESULT_CANCEL = -4;
+    int REQUEST_RESULT_SUCCESS = 0;
+    int REQUEST_RESULT_FAILED = -1;
+    @SuppressWarnings("unused")
+    int REQUEST_RESULT_NO_DATA = -2;
+    @SuppressWarnings("unused")
+    int REQUEST_RESULT_TIMEOUT = -3;
+    int REQUEST_RESULT_CANCEL = -4;
 
     //request parameter key
-    static final String BUNDLE_KEY_PARAM_IMAGE_REQUEST_ITEM = "cgw.image.req.item";
-    static final String BUNDLE_KEY_RESULT_MESSAGE = "cgw.result.msg";
+    String BUNDLE_KEY_PARAM_IMAGE_REQUEST_ITEM = "cgw.image.req.item";
+    String BUNDLE_KEY_RESULT_MESSAGE = "cgw.result.msg";
 
     //request result key
-    static final String BUNDLE_KEY_RESULT_USER = "cgw.result.user";
-    static final String BUNDLE_KEY_RESULT_TWEETS = "cgw.result.tweets";
+    String BUNDLE_KEY_RESULT_USER = "cgw.result.user";
+    String BUNDLE_KEY_RESULT_TWEETS = "cgw.result.tweets";
 
     //request type
-    static final int REQUEST_TYPE_GET_USER_INFO = 0x1001;
-    static final int REQUEST_TYPE_GET_TWEETS_INFO = 0x1002;
-    static final int REQUEST_TYPE_GET_IMAGE_BITMAP = 0x10FE;
-    static final int REQUEST_TYPE_DECODE_IMAGE_BITMAP = 0x10FF;
+    int REQUEST_TYPE_GET_USER_INFO = 0x1001;
+    int REQUEST_TYPE_GET_TWEETS_INFO = 0x1002;
+    int REQUEST_TYPE_GET_IMAGE_BITMAP = 0x10FE;
+    int REQUEST_TYPE_DECODE_IMAGE_BITMAP = 0x10FF;
 
     void requestDataOperation(IViewController target, Message msg);
     void cancelDataOperation(IViewController target, Message msg);

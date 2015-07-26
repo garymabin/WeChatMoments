@@ -31,7 +31,7 @@ public class ParcelableObjectPool {
     }
 
     public synchronized ParcelablePoolObject newObject() {
-        ParcelablePoolObject obj = null;
+        ParcelablePoolObject obj;
         if (mFreeObjectIndex == -1) {
             obj = mFactory.createPoolObject();
         } else {

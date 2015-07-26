@@ -76,11 +76,15 @@ public class UserInfo extends BaseInfo {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("[UserInfo]: ");
-        sb.append("profileImage: ").append(profileImage == null ? "[unspecified]" : profileImage)
-                .append(" avatar: ").append(avatar == null ? "[unspecified]" : avatar)
-                .append(" nick: ").append(nick == null ? "[unspecified]" : nick)
-                .append(" userName: ").append(userName == null ? "[unspecified]" : userName);
-        return sb.toString();
+        String str = "[UserInfo]: ";
+        str += "profileImage: ";
+        str += (profileImage == null ? "[unspecified]" : profileImage);
+        str += (" avatar: ");
+        str += (avatar == null ? "[unspecified]" : avatar);
+        str += (" nick: ");
+        str += (nick == null ? "[unspecified]" : nick);
+        str += (" userName: ");
+        str += (userName == null ? "[unspecified]" : userName);
+        return str;
     }
 }

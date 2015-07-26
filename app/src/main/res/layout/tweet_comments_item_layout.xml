@@ -17,20 +17,19 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="@dimen/tweet_comment_item_height"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/tweet_comments_padding"
     android:gravity="center_vertical">
     <TextView
         android:id="@+id/comments_nick_name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/tweet_nickname_text_size"
-        android:textColor="@color/primary_text_color"
-        android:text="Jack:"/>
+        android:textSize="@dimen/tweet_content_text_size"
+        android:textColor="@color/primary_text_color" />
     <TextView
         android:id="@+id/comments_content_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/tweet_nickname_text_size"
-        android:textColor="@color/secondary_text_color"
-        android:text="Hello World!"/>
+        android:textSize="@dimen/tweet_content_text_size"
+        android:textColor="@color/secondary_text_color" />
 </LinearLayout>

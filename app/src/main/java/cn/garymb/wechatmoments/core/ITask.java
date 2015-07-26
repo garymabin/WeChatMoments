@@ -20,7 +20,7 @@ import com.android.volley.Request;
 
 public interface ITask<T> {
 
-    public interface TaskCallback<T> {
+    interface TaskCallback<T> {
         void onTaskTimeout(T result);
         void onTaskFinish(T result);
     }

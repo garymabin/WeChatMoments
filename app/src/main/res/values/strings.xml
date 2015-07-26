@@ -17,8 +17,6 @@
 <resources>
     <string name="app_name">WeChatMoments</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="network_error">Network error</string>
     <string name="network_timeout_error">Network timeout</string>
     <string name="tweet_sender_avatar_image_des">Tweet Sender Avatar ImageView</string>
