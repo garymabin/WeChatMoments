@@ -1,0 +1,13 @@
+1.The demo has been tested on devices below:
+    Google Nexus4-4.1.1-API16-768x1280 (Android virtual device)
+    Google Nexus One-2.3.7-API10-480x800 (Android virtual device)
+    Meizu MX3-5.0.1-Flyme OS 4.3.2-API21-1080x1920 (Anroid real device)
+  I've try to make the layout looks fit on those three major resolution.
+
+2.It will be much better if we can know one image's size in advance, then we can set different place holder image to fit different image size rather than set a fix size to every tweet with single image.
+
+3.The requested API Level is 14+, I set it to 10+, which I think is harmless.
+
+4.The data model structure is easy to add some more complicated cache strategy. Since data caching is not a must in this work, I just implements the basic image caching logic.
+
+5.Some images' url seems to be broken, I can not get them on phones even with under a VPN.
